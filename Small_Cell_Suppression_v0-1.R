@@ -220,13 +220,3 @@ replace_loop <-  function(df, collapse_var, sum_function, minCell = 5, ...) {
   
   return(df_out)
 }
-
-
-temp <- replace_loop(dfRaw, carrier, sum_function = "n()", minCell = 5, month, year, arr_time)
-
-
-
-l.temp <- list( c("n()", "count"),  c("sum(count, na.rm=T)", "sum"))
-dfTemp <- dfOutPut %>% ungroup() %>% group_by(month) %>% summarise_(.dots = setNames(l.temp[[1]][1], l.temp[[1]][2]))
-
-
