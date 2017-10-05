@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #' Small Cell Suppression
 #' 
 #' Iteratively replaces values of variables until minimum cell size of reporting
@@ -10,16 +10,16 @@
 #' @param minCell minimum desired cell size, default = 5
 #' @param ... used to pass additional grouping variables, typically ordinal or
 #' un-ordered factors
-=======
+
 #  
 #  Small Cell Suppression
 #
->>>>>>> 261d1fb296ddbe1d4a1500e24b8949098c4919e3
 
 
 
 
-<<<<<<< HEAD
+
+
 # Current to dos:
 # 
 # - adjust for ordered grouping variables
@@ -28,17 +28,17 @@
 library(dplyr)
 library(tidyr)
 library(rlang)
-=======
+
 library(dplyr)
 library(tidyr)
 library(rlang)
 ##Sample Data Load
->>>>>>> 261d1fb296ddbe1d4a1500e24b8949098c4919e3
 
 
 
 
-<<<<<<< HEAD
+
+
 
 replace_loop <-  function(df, collapse_var, minCell = 5, ...) {
   
@@ -79,7 +79,7 @@ replace_loop <-  function(df, collapse_var, minCell = 5, ...) {
     
    
     names(df_prime) <- c("xy", l.groupNames, quo_name(cVar))
-=======
+
 replace_loop <-  function(df, collapse_var, sum_function, minCell = 5, ...) {
   
  
@@ -139,7 +139,7 @@ replace_loop <-  function(df, collapse_var, sum_function, minCell = 5, ...) {
     
     
     names(df_prime) <- c("xy", quo_name(cVar), l.groupNames)
->>>>>>> 261d1fb296ddbe1d4a1500e24b8949098c4919e3
+
     
     
     # remove the original collapse variable and replace with the modified collapse values
@@ -147,7 +147,7 @@ replace_loop <-  function(df, collapse_var, sum_function, minCell = 5, ...) {
     df <- df %>%
       select(- UQ(cVar) ) %>%
       left_join(., df_prime, by = c("xy", l.groupNames))
-<<<<<<< HEAD
+
 
     
     replace_loop(df, UQ(cVar), minCell, !!!l.gVar)
@@ -163,7 +163,7 @@ replace_loop <-  function(df, collapse_var, sum_function, minCell = 5, ...) {
   return(df_out)
 }
 }
-=======
+
     
 
     
@@ -228,5 +228,5 @@ temp <- replace_loop(dfRaw, carrier, sum_function = "n()", minCell = 5, month, y
 
 l.temp <- list( c("n()", "count"),  c("sum(count, na.rm=T)", "sum"))
 dfTemp <- dfOutPut %>% ungroup() %>% group_by(month) %>% summarise_(.dots = setNames(l.temp[[1]][1], l.temp[[1]][2]))
->>>>>>> 261d1fb296ddbe1d4a1500e24b8949098c4919e3
+
 
