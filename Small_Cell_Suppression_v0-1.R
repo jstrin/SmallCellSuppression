@@ -24,13 +24,9 @@
 # 
 # - adjust for ordered grouping variables
 # - check that each grouping variable on it's own meets minimum cell criteria
+# - remove recursion
 
 
-
-library(dplyr)
-library(tidyr)
-library(rlang)
-##Sample Data Load
 
 
 
@@ -39,7 +35,12 @@ library(rlang)
 
 
 replace_loop <-  function(df, collapse_var, minCell = 5, ...) {
+
+  require(dplyr)
+  require(tidyr)
+  require(rlang)
   
+    
   cVar <- enquo(collapse_var)
   
   l.gVar <- quos(...)
@@ -87,9 +88,9 @@ replace_loop <-  function(df, collapse_var, minCell = 5, ...) {
 
 
     
-    replace_loop(df, UQ(cVar), minCell, !!!l.gVar)
     
-      }else{
+    
+      }
        
         
         
@@ -98,7 +99,7 @@ replace_loop <-  function(df, collapse_var, minCell = 5, ...) {
       
   
   return(df_out)
-}
+
 }
 
     
