@@ -1,8 +1,7 @@
 
-#' Minimum Column Check
+#' column count check
 #' 
-#' min_col_check calculates count of each group within a column to ensure 
-#'   minimum size is met; if the minimum size is not met, the value is replaced
+#' checks the count of each group within a column to ensure minimum size is met
 #' 
 #' @param df data frame
 #' @param collapse_var the first variable of interest. May be numeric, ordinal,
@@ -34,7 +33,7 @@
 
 
 
-min_col_check <-  function(df, collapse_var, minCell = 5, ...) {
+ColumnCountCheck <-  function(df, collapse_var, minCell = 5, ...) {
 
   require(dplyr)
   require(tidyr)
@@ -44,46 +43,42 @@ min_col_check <-  function(df, collapse_var, minCell = 5, ...) {
   cVar <- enquo(collapse_var)
   
   l.gVar <- quos(...)
-
   
   # Get count of grouping variables
   gVar_counter <- length(l.gVar)
   
   
-  
   for(i in l.gVar){
-    t.name <- quo_name(i)
     
-    if(is.factor(unlist(select(df, UQ(i))))){
-      df_n <- df %>%
-        mutate(collapse_out = as.character(UQ(i)))
-      
-    }else{
-      df_n <- df %>%
-        mutate(collapse_out = UQ(i))
-    }
-    
-   
-    
-    df_grouped <- df_n %>%
-      group_by(UQ(i), collapse_out ) %>%
+    df_grouped <- df %>%
+      group_by(UQ(i) ) %>%
       summarise(count = n())
-    
-    
     
     if(min(df_grouped$count)<minCell){
       
-      
+      if(is.factor(select(df_grouped, UQ(i)))){
+        df
+      }
       
       
       df_prime <- df_grouped %>%
         ungroup() %>%
-        mutate(collapse_out = ifelse(count < minCell, "Other", collapse_out  )) %>%
+        mutate(collapse_out = ifelse(count < minCell, "Other", UQ(i)  )) %>%
         select(- count )
      
-       
-      # remove the original collapse variable and replace with the modified collapse values
       
+      
+    
+      
+      
+     
+      
+      
+      
+      
+      
+      # remove the original collapse variable and replace with the modified collapse values
+      t.name <- quo_name(i)
       
 
 
@@ -91,7 +86,7 @@ min_col_check <-  function(df, collapse_var, minCell = 5, ...) {
         left_join(., df_prime, by = c(t.name)) %>%
         select( - UQ(i)) 
       
-      print(names(df))
+      
       
       names(df)[which(names(df) %in% "collapse_out")] <- t.name
     } else{
@@ -100,7 +95,12 @@ min_col_check <-  function(df, collapse_var, minCell = 5, ...) {
   }
   
   
- 
+  # find out if there are any groups with fewer than the minimum cell size
+
+  
+       
+        
+        
           df_out <- df
          
       

@@ -23,7 +23,17 @@ dfTest <- data.frame(number = rnorm(1000, mean = 100, sd = 10),
                                          if_else(number < 115, "high",
                                                  if_else(number < 125, "v.high",
                                                          "ext.high")))))) %>%
-  mutate(fact3 = factor(fact2, levels = c("v.low", "low", "med", "high", "v.high", "ext.high")))
+  mutate(fact3 = factor(fact2, levels = c("v.low", "low", "med", "high", "v.high", "ext.high"), ordered =T)) %>%
+  mutate(fact4 = factor(if_else(number < 75, "ext.low",
+                         if_else(number < 90, "v.low", 
+                                 if_else(number<95, "low",
+                                         if_else(number < 99.99, "somewhat.low", 
+                                                 if_else(number < 100.01, "med", 
+                                                         if_else (number < 105, "somewhat.high", 
+                                                                  if_else(number < 110, "high", 
+                                                                          if_else(number < 125, "v.high", 
+                                                                                  "ext.high")))))))), ordered = T, levels = c("ext.low", "v.low", "low", "somewhat.low",
+                                                                                                                              "med", "somewhat.high", "high", "v.high", "ext.high")))
 
 
 #Proof of Concept
@@ -59,4 +69,6 @@ temp_col <- ColumnCountCheck(dfTest, fact1, minCell = 5, fact2, fact3)
 
 
 
+source("ordered_factor_replacement_v0-1.R")
 
+temp <- replace_ofact(dfTest, fact4)
